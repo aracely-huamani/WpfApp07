@@ -9,41 +9,59 @@ using Entity;
 
 namespace Data
 {
+
     public class DProduct
     {
-        public string connectionString = "Data Source=LAB1504-21\\SQLEXPRESS;Initial Catalog=FacturDB;User ID=tecsup;Password=T3csup3168";
+        private string connection = "Data Source=LAB1504-21\\SQLEXPRESS;Initial Catalog=FacturDB;User ID=tecsup;Password=T3csup3168";
 
-        public List<Product> Get()
+        public void InsertarProduct(Product product)
         {
-            List<Product> products = new List<Product>();
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlConnection sqlConnection = new SqlConnection(connection))
             {
-                using (SqlCommand command = new SqlCommand("ListProducts", connection))
+                sqlConnection.Open();
+                SqlCommand command = new SqlCommand("SET IDENTITY_INSERT products ON", sqlConnection);
+                command.ExecuteNonQuery();
+
+                command = new SqlCommand("InsertarProducts", sqlConnection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@productId", product.productId);
+                command.Parameters.AddWithValue("@name", product.name);
+                command.Parameters.AddWithValue("@price", product.price);
+                command.Parameters.AddWithValue("@stock", product.stock);
+                command.Parameters.AddWithValue("@active", product.active);
+
+                command.ExecuteNonQuery();
+
+                command = new SqlCommand("SET IDENTITY_INSERT products OFF", sqlConnection);
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public List<Product> ListarProduct()
+        {
+            List<Product> result = new List<Product>();
+            using (SqlConnection sqlConnection = new SqlConnection(connection))
+            {
+                using (SqlCommand command = new SqlCommand("ListarProduct", sqlConnection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
-                    connection.Open();
+                    sqlConnection.Open();
 
-                    using (SqlDataReader reader = command.ExecuteReader())
+                    SqlDataReader reader = command.ExecuteReader();
+                    while (reader.Read())
                     {
-                        while (reader.Read())
-                        {
-                            Product product = new Product
-                            {
-                                productId = reader.GetInt32(0),
-                                name = reader.GetString(1),
-                                price = reader.GetDecimal(2),
-                                stock = reader.GetInt32(3),
-                                active = reader.GetBoolean(4)
-                            };
-
-                            products.Add(product);
-                        }
+                        Product product = new Product();
+                        product.productId = Convert.ToInt32(reader["productId"]);
+                        product.name = reader["name"].ToString();
+                        product.price = Convert.ToDecimal(reader["price"]);
+                        product.stock = Convert.ToInt32(reader["stock"]);
+                        product.active = Convert.ToBoolean(reader["active"]);
+                        result.Add(product);
                     }
+                    reader.Close();
                 }
             }
-
-            return products;
+            return result;
         }
     }
 }
