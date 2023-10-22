@@ -1,0 +1,19 @@
+﻿<Window x:Class="WpfApp07.ListarProduct"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp07"
+        mc:Ignorable="d"
+        Title="ListarProduct" Height="450" Width="800">
+    <Grid>
+        <DataGrid x:Name="dgDemo">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Id" Width="100" Binding="{Binding productId}" />
+                <DataGridTextColumn Header="Nombre" Width="50" Binding="{Binding name}" />
+                <DataGridTextColumn Header="Precio" Width="50" Binding="{Binding price}" />
+                <DataGridTextColumn Header="Stock" Width="50" Binding="{Binding stock}" />
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>

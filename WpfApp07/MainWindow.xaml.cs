@@ -22,19 +22,39 @@ namespace WpfApp07
     /// </summary>
     public partial class MainWindow : Window
 
-    {
-      
-        public MainWindow()
+    { 
+
+            BProduct productManager;
+
+            public MainWindow()
+            {
+                InitializeComponent();
+                productManager = new BProduct();
+            }
+
+            private void Button_Click(object sender, RoutedEventArgs e)
+            {
+                Product product = new Product
+                {
+                    productId = Convert.ToInt32(txtproductId.Text),
+                    name = txtname.Text,
+                    price = txtprice.Text,
+                    stock = txtstock.Text,
+                    active = true
+                };
+
+                productManager.InsertarProduct(product);
+
+
+            }
+
+
+        private void ListarProduct_Click(object sender, RoutedEventArgs e)
         {
-            InitializeComponent();
-
-
-
-         private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            BProduct product = new BProduct();
-                var products = product.GetByName("Nombre");
+            ListarProduct listarCustomer = new ListarProduct();
+            //customerManager.ListarCustomer();
         }
-    }
+
+        
     }
 }
