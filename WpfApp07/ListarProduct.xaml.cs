@@ -26,7 +26,7 @@ namespace WpfApp07
         {
             InitializeComponent();
             productManager = new BProduct();
-            dgDemo.ItemsSource = productManager.ListarProduct("John Doe");
+            //dgDemo.ItemsSource = productManager.ListarProduct("John Doe");
         }
 
         public void listarCustomer(object sender, RoutedEventArgs e)

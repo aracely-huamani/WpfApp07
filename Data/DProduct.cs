@@ -12,7 +12,7 @@ namespace Data
 
     public class DProduct
     {
-        private string connection = "Data Source=LAB1504-21\\SQLEXPRESS;Initial Catalog=FacturDB;User ID=tecsup;Password=T3csup3168";
+        private string connection = "Data Source=LAB1504-21\\SQLEXPRESS;Initial Catalog=FacturaDB;User ID=tecsup;Password=T3csup3168";
 
         public void InsertarProduct(Product product)
         {
@@ -24,11 +24,11 @@ namespace Data
 
                 command = new SqlCommand("InsertarProducts", sqlConnection);
                 command.CommandType = CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@productId", product.productId);
-                command.Parameters.AddWithValue("@name", product.name);
-                command.Parameters.AddWithValue("@price", product.price);
-                command.Parameters.AddWithValue("@stock", product.stock);
-                command.Parameters.AddWithValue("@active", product.active);
+                command.Parameters.AddWithValue("@ProductId", product.productId);
+                command.Parameters.AddWithValue("@Name", product.name);
+                command.Parameters.AddWithValue("@Price", product.price);
+                command.Parameters.AddWithValue("@Stock", product.stock);
+                command.Parameters.AddWithValue("@Active", product.active);
 
                 command.ExecuteNonQuery();
 
@@ -51,7 +51,7 @@ namespace Data
                     while (reader.Read())
                     {
                         Product product = new Product();
-                        product.productId = Convert.ToInt32(reader["productId"]);
+                        product.productId = Convert.ToInt32(reader["product_id"]);
                         product.name = reader["name"].ToString();
                         product.price = Convert.ToDecimal(reader["price"]);
                         product.stock = Convert.ToInt32(reader["stock"]);

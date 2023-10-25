@@ -38,8 +38,8 @@ namespace WpfApp07
                 {
                     productId = Convert.ToInt32(txtproductId.Text),
                     name = txtname.Text,
-                    price = txtprice.Text,
-                    stock = txtstock.Text,
+                    price = Convert.ToDecimal(txtprice.Text),
+                    stock = Convert.ToInt32(txtstock.Text),
                     active = true
                 };
 

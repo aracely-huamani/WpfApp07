@@ -23,10 +23,10 @@ namespace Business
             dProduct.InsertarProduct(product);
         }
 
-        public List<Product> ListarProduct(string name)
+        public List<Product> ListarProduct()//string name)
         {
-            var product = dProduct.ListarProduct();
-            var result = product.Where(x => x.name == name).ToList();
+            //var product = dProduct.ListarProduct();
+            //var result = product.Where(x => x.name == name).ToList();
 
             return dProduct.ListarProduct();
         }

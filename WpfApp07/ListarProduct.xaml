@@ -10,9 +10,9 @@
         <DataGrid x:Name="dgDemo">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Id" Width="100" Binding="{Binding productId}" />
-                <DataGridTextColumn Header="Nombre" Width="50" Binding="{Binding name}" />
-                <DataGridTextColumn Header="Precio" Width="50" Binding="{Binding price}" />
-                <DataGridTextColumn Header="Stock" Width="50" Binding="{Binding stock}" />
+                <DataGridTextColumn Header="Nombre" Width="60" Binding="{Binding name}" />
+                <DataGridTextColumn Header="Precio" Width="60" Binding="{Binding price}" />
+                <DataGridTextColumn Header="Stock" Width="60" Binding="{Binding stock}" />
             </DataGrid.Columns>
         </DataGrid>
     </Grid>
