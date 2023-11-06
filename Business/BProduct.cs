@@ -23,12 +23,27 @@ namespace Business
             dProduct.InsertarProduct(product);
         }
 
-        public List<Product> ListarProduct()//string name)
+        public void EliminarProduct(int product)
         {
-            //var product = dProduct.ListarProduct();
-            //var result = product.Where(x => x.name == name).ToList();
+            dProduct.EliminarProduct(product);
+        }
 
-            return dProduct.ListarProduct();
+
+        public List<Product> GetByName(string name)
+        {
+            List<Product> result = new List<Product>();
+
+            var products = dProduct.Get();
+
+            result = products.Where(x => x.name.Contains(name)).ToList();
+
+            return result;
+        }
+
+        public Product GetProductById(int productId)
+        {
+            var products = dProduct.Get();
+            return products.FirstOrDefault(p => p.productId == productId);
         }
 
     }

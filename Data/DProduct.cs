@@ -12,32 +12,51 @@ namespace Data
 
     public class DProduct
     {
-        private string connection = "Data Source=LAB1504-21\\SQLEXPRESS;Initial Catalog=FacturaDB;User ID=tecsup;Password=T3csup3168";
+        private string connection = "Data Source=DESKTOP-90DN5US\\SQLEXPRESS;Initial Catalog=FacturaDB;User ID=tecsup;Password=T3csup3168";
 
         public void InsertarProduct(Product product)
         {
             using (SqlConnection sqlConnection = new SqlConnection(connection))
             {
                 sqlConnection.Open();
-                SqlCommand command = new SqlCommand("SET IDENTITY_INSERT products ON", sqlConnection);
-                command.ExecuteNonQuery();
 
-                command = new SqlCommand("InsertarProducts", sqlConnection);
-                command.CommandType = CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@ProductId", product.productId);
-                command.Parameters.AddWithValue("@Name", product.name);
-                command.Parameters.AddWithValue("@Price", product.price);
-                command.Parameters.AddWithValue("@Stock", product.stock);
-                command.Parameters.AddWithValue("@Active", product.active);
+                using (SqlCommand command = new SqlCommand("InsertarProduct", sqlConnection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@product_id", product.productId);
+                    command.Parameters.AddWithValue("@name", product.name);
+                    command.Parameters.AddWithValue("@price", product.price);
+                    command.Parameters.AddWithValue("@descripcion", product.descripcion);
+                    command.Parameters.AddWithValue("@active", product.active);
 
-                command.ExecuteNonQuery();
-
-                command = new SqlCommand("SET IDENTITY_INSERT products OFF", sqlConnection);
-                command.ExecuteNonQuery();
+                    command.ExecuteNonQuery();
+                }
             }
         }
 
-        public List<Product> ListarProduct()
+        public void EliminarProduct(int product)
+        {
+
+            using (SqlConnection sqlConnection = new SqlConnection(connection))
+            {
+                sqlConnection.Open();
+
+                using (SqlCommand command = new SqlCommand("EliminarProduct", sqlConnection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@productId", product);
+
+                    command.ExecuteNonQuery();
+                }
+
+
+            }
+
+
+        }
+
+
+        public List<Product> Get()
         {
             List<Product> result = new List<Product>();
             using (SqlConnection sqlConnection = new SqlConnection(connection))
@@ -53,9 +72,11 @@ namespace Data
                         Product product = new Product();
                         product.productId = Convert.ToInt32(reader["product_id"]);
                         product.name = reader["name"].ToString();
+                        product.descripcion = reader["descripcion"].ToString();
                         product.price = Convert.ToDecimal(reader["price"]);
                         product.stock = Convert.ToInt32(reader["stock"]);
                         product.active = Convert.ToBoolean(reader["active"]);
+
                         result.Add(product);
                     }
                     reader.Close();

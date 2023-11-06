@@ -2,6 +2,7 @@
 using Entity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Reflection;
 using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
@@ -12,7 +13,7 @@ namespace WebApplication1.Controllers
         public ActionResult Index()
         {
             BProduct bproduct = new BProduct();
-            List<Product> product = bproduct.ListarProduct();
+            List<Product> product = bproduct.GetByName("");
 
             //Convertir Entidad a modelo
 
@@ -20,7 +21,9 @@ namespace WebApplication1.Controllers
             {
                 Id = x.productId,
                 Name = x.name,
-                Price = x.price.ToString("0.00"),
+                Descripcion = x.descripcion,
+                Price = x.price,
+
             }).ToList();
             return View(productsModel);
         }
@@ -28,45 +31,44 @@ namespace WebApplication1.Controllers
         // GET: ProductController/Details/5
         public ActionResult Details(int id)
         {
-            return View(); 
-        }
-
-        // GET: ProductController/Create
-        public ActionResult Create()
-        {
             return View();
         }
+
+
 
         // POST: ProductController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(ProductModel model)
         {
+
             try
             {
-        
-                    BProduct bproduct = new BProduct();
-
-                   
-                    Product nuevoProducto = new Product
+                if (ModelState.IsValid)
+                {
+                    BProduct business = new BProduct();
+                    Product product = new Product
                     {
                         productId = model.Id,
                         name = model.Name,
-                        price = Convert.ToDecimal(model.Price),
+                        price = model.Price,
+
+
                     };
+                    business.InsertarProduct(product);
 
-               
-                bproduct.InsertarProduct(nuevoProducto);
-
-                
-                return RedirectToAction(nameof(Index));
-                
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    return View(model);
+                }
             }
             catch
             {
-                // En caso de error, muestra la vista de nuevo o maneja el error de otra manera.
                 return View();
             }
+
         }
 
         // GET: ProductController/Edit/5
@@ -91,24 +93,44 @@ namespace WebApplication1.Controllers
         }
 
         // GET: ProductController/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int product)
         {
-            return View();
+            BProduct business = new BProduct();
+            Product products = business.GetProductById(product);
+
+            if (products == null)
+            {
+                return NotFound();
+            }
+
+            ProductModel model = new ProductModel
+            {
+                Id = products.productId,
+                Name = products.name,
+                Price = products.price,
+                Descripcion = products.descripcion,
+
+            };
+
+            return View(model);
         }
 
         // POST: ProductController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(int product, IFormCollection collection)
         {
             try
             {
+                BProduct business = new BProduct();
+                business.EliminarProduct(product);
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
                 return View();
             }
+
         }
     }
 }

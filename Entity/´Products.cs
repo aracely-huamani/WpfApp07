@@ -10,14 +10,16 @@ namespace Entity
 {
     public class Product
     {
-        [Key]
+
         public int productId { get; set; }
-     
+
         public string name { get; set; }
-      
+
         public decimal price { get; set; }
-      
+
         public int stock { get; set; }
         public bool active { get; set; }
+
+        public string descripcion { get; set; }
     }
 }
